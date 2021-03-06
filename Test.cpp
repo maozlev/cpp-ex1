@@ -11,11 +11,9 @@
 #include <math.h> 
 #include "doctest.h"
 #include "snowman.hpp"
-using namespace ariel;
-
 #include <string>
+using namespace ariel;
 using namespace std;
-
 
 TEST_CASE("Good snowman code") {
     CHECK(snowman(11114411) == string("_===_\n(.,.)\n( : )\n( : )"));
@@ -49,7 +47,6 @@ TEST_CASE("Good snowman code") {
     CHECK(snowman(11444444) == string("_===_\n(-,-)\n(   )\n(   )"));
     CHECK(snowman(44223311) == string("   ___\n (_*_)\n (o o)\n/( : )\\n ( : )"));
 }
-
 
 TEST_CASE("Bad snowman code (short number)") { 
       for (int i = 0; i < 10; i++)
@@ -120,13 +117,12 @@ TEST_CASE("Bad snowman code (negative short number)") {
        int v = rand() % -100000 + -999999;
        CHECK_THROWS(snowman(v));
    }
-for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++)
    {
        int v = rand() % -1000000 + -9999999;
        CHECK_THROWS(snowman(v));
    }
 }
-
 
 TEST_CASE("Bad snowman code (long number)") {
    for (int i = 0; i < 10; i++)
@@ -153,12 +149,11 @@ TEST_CASE("Bad snowman code negative number"){
    }
 }
 
-
 TEST_CASE("Bad snowman code (invalid number every iteration put number between 5-9)"){
     int number = 11111111;
     int j = 0; 
     while(j<20){
-        int v = rand() % 5 + 5;
+        int v = rand() % 6 + 4;
         for (int i = 0; i < 8; i++)
         {
             //  cout<<v<<endl;
