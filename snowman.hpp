@@ -1,4 +1,4 @@
 #include <iostream>
 namespace ariel{
-std::string snowman(int x);
+std::string snowman(int input);
 };

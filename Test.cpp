@@ -7,14 +7,44 @@
 #include "doctest.h"
 #include "snowman.hpp"
 #include <string>
+#include <iostream>
+#include <stdexcept>
+#include <array>
+#include <algorithm>
 using namespace ariel;
 using namespace std;
+
+    /**
+    * Returns the input string without the whitespace characters: space, newline and tab.
+    * Requires std=c++2a.
+    */
+
+string nospaces(string input) {
+	input.erase(remove(input.begin(), input.end(), ' '), input.end());
+	input.erase(remove(input.begin(), input.end(), '\t'), input.end());
+	input.erase(remove(input.begin(), input.end(), '\n'), input.end());
+	input.erase(remove(input.begin(), input.end(), '\r'), input.end());
+	return input;
+}
+
+// string nospaces(string input) {
+//         std::erase(input, ' ');
+//         std::erase(input, '\t');
+//         std::erase(input, '\n');
+//         std::erase(input, '\r');
+//         return input;
+//     }
+
+TEST_CASE("Good snowman code check spaces") {
+
+    CHECK(nospaces(snowman(11114411)) == nospaces("_===_\n(.,.)\n( : )\n( : )"));
+}
 
 TEST_CASE("Good snowman code") { // every snowman have 4 levels:
 //
 // hat, head, belly, base
 // each level have 7 chars
-// ** the hat have 2 levels - because there are hats that have 2 levels.. 
+// ** the hat have 2 levels - because there are hats that have 2 levels...
 
     CHECK(snowman(11111111) == string("       \n _===_ \n (.,.) \n<( : )>\n ( : ) "));
     CHECK(snowman(11112211) == string("       \n _===_ \n\\(.,.)/\n ( : ) \n ( : ) "));
@@ -180,6 +210,8 @@ TEST_CASE("Bad snowman code (invalid number every iteration put number between 5
         j++;
     }
 }
+
+
 
 
 
