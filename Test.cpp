@@ -3,10 +3,10 @@
  * 
  * Date: 2021-03
  */
-#include <math.h> 
 #include "doctest.h"
 #include "snowman.hpp"
-#include <string>
+#include <math.h> 
+// #include <string>
 #include <iostream>
 #include <stdexcept>
 #include <array>
@@ -27,20 +27,111 @@ string nospaces(string input) {
 	return input;
 }
 
-// string nospaces(string input) {
-//         std::erase(input, ' ');
-//         std::erase(input, '\t');
-//         std::erase(input, '\n');
-//         std::erase(input, '\r');
-//         return input;
-//     }
+int num_of_test = 0;
+int num_of_passed_test = 0;
+int num_of_fail_test = 0;
 
-TEST_CASE("Good snowman code check spaces") {
+TEST_CASE("Good snowman generic check 8^4 checks") { // check without spaces
 
-    CHECK(nospaces(snowman(11114411)) == nospaces("_===_\n(.,.)\n( : )\n( : )"));
+    const int power_7 = 7;
+    const int power_6 = 6;
+    const int power_5 = 5;
+    const int power_4 = 4;
+    const int power_3 = 3;
+    const int power_2 = 2;
+    
+    // 8 arrays for every part in snowman
+
+    const array<string, 4> hat  { "       \n _===_ \n", "  ___  \n ..... \n","   _   \n  /_\\  \n","  ___  \n (_*_) \n" };
+    const array<string, 4> nose  { ",", ".", "_", " " }; 
+    const array<string, 4> left_eye  { "(.", "(o", "(O", "(-" }; 
+    const array<string, 4> right_eye  { ".)", "o)", "O)", "-)" }; 
+    const array<string, 4> left_arm  { "<", "\\", "/", " " }; 
+    const array<string, 4> right_arm  { ">", "/", "\\", " " };
+    const array<string, 4> torso  { "( : )", "(] [)", "(> <)", "(   )" };
+    const array<string, 4> base  { " ( : ) ", " (\" \") ", " (___) " , " (   ) " };
+
+    
+    string snowman_check;
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                for (int n = 0; n < 4; n++)
+                {
+                    for (int m = 0; m < 4; m++)
+                    {
+                        for (int p = 0; p < 4; p++)
+                        {
+                            for (int l = 0; l < 4; l++)
+                            {
+                                for (int q = 0; q < 4; q++)
+                                {
+                                    
+                                    //calculate the generic number
+
+                                    int check = (i+1)*pow(10,power_7)+ (j+1)*pow(10,power_6)+ (k+1)*pow(10,power_5)+ (n+1)*pow(10,power_4)
+                                    + (m+1)*pow(10,power_3)+ (p+1)*pow(10,power_2)+ (l+1)*10+ q+1;
+
+                                    // we need to split the check to 4 parts because we need to check positions of hands
+
+                                    if(m != 1 && p!= 1){
+
+                                        string snowman_check =  hat.at(i)+left_eye.at(k)+nose.at(j)
+                                        +right_eye.at(n)+"\n"+left_arm.at(m)+torso.at(l)+right_arm.at(p)+"\n"+base.at(q);
+                                        // cout<<check<<endl;
+                                        CHECK(nospaces(snowman(check)) == nospaces(snowman_check)); 
+                                        num_of_test++;
+                                        break; 
+
+                                    }
+
+                                    if(m == 1 && p == 1){
+
+                                        string snowman_check =  hat.at(i)+"\\"+left_eye.at(k)+nose.at(j)
+                                        +right_eye.at(n)+"/"+"\n"+torso.at(l)+"\n"+base.at(q);
+                                        // cout<<check<<endl;
+                                        CHECK(nospaces(snowman(check)) == nospaces(snowman_check));
+                                        num_of_test++;
+                                        break;
+                                    
+                                    }
+
+                                    if(m != 1 && p == 1){
+
+                                         string snowman_check =  hat.at(i)+left_eye.at(k)+nose.at(j)
+                                        +right_eye.at(n)+right_arm.at(p)+"\n"+left_arm.at(m)+torso.at(l)+"\n"+base.at(q);
+                                        // cout<<check<<endl;
+                                        CHECK(nospaces(snowman(check)) == nospaces(snowman_check));
+                                        num_of_test++;
+                                        break;
+                                    
+                                    }
+
+                                    if(m == 1 && p != 1){
+
+                                        string snowman_check =  hat.at(i)+left_arm.at(m)+left_eye.at(k)+nose.at(j)
+                                        +right_eye.at(n)+"\n"+torso.at(l)+right_arm.at(p)+"\n"+base.at(q);
+                                        // cout<<check<<endl;
+                                        CHECK(nospaces(snowman(check)) == nospaces(snowman_check));
+                                        num_of_test++;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
-TEST_CASE("Good snowman code") { // every snowman have 4 levels:
+TEST_CASE("Good snowman code") { // check with my spaces
+// every snowman have 4 levels:
 //
 // hat, head, belly, base
 // each level have 7 chars
@@ -82,6 +173,8 @@ TEST_CASE("Good snowman code") { // every snowman have 4 levels:
     CHECK(snowman(44433322) == string("  ___  \n (_*_) \n (- O) \n/(] [)\\\n (\" \") "));
     CHECK(snowman(44134444) == string("  ___  \n (_*_) \n (. O) \n (   ) \n (   ) "));
 
+    num_of_test+=32;
+
     }
 
     // checks random short numbers
@@ -122,6 +215,7 @@ TEST_CASE("Bad snowman code (short number)") {
        int v = rand() % 9999999+1000000;
        CHECK_THROWS(snowman(v));
    }
+   num_of_test+=70;
 }
 
 // checks random negative short numbers
@@ -162,6 +256,7 @@ TEST_CASE("Bad snowman code (negative short number)") {
        int v = rand() % -1000000 + -9999999;
        CHECK_THROWS(snowman(v));
    }
+   num_of_test+=70;
 }
 
 // checks random long numbers
@@ -172,6 +267,7 @@ TEST_CASE("Bad snowman code (long number)") {
        int v = rand() % 999999999+100000000;
        CHECK_THROWS(snowman(v));
    }
+   num_of_test+=10;
 }
 
 // checks random negative long numbers
@@ -182,6 +278,7 @@ TEST_CASE("Bad snowman code (negative long number)") {
        int v = rand() % -100000000 + -999999999;
        CHECK_THROWS(snowman(v));
    }
+   num_of_test+=10;
 }
 
 // checks random negative numbers
@@ -192,6 +289,7 @@ TEST_CASE("Bad snowman code negative number"){
        int v = rand() % -10000000 + -99999999;
        CHECK_THROWS(snowman(v));
    }
+   num_of_test+=10;
 }
 
 // checks random invalid number each place
@@ -205,11 +303,18 @@ TEST_CASE("Bad snowman code (invalid number every iteration put number between 5
         {
             //  cout<<v<<endl;
             // cout<<number+v*(pow(10,i))<<endl;
-            CHECK_THROWS(snowman(number+v*(pow(10,i))));
+                CHECK_THROWS(snowman(number+v*(pow(10,i))));
+            
         }
         j++;
     }
+    num_of_test+=20*8;
+    // cout<<"number of all test:  ================"<<16746<<"================"<<endl;
+    // cout<<"number passed test:  ================"<<num_of_passed_test<<"================"<<endl;
+    // cout<<"number of fail test: ================"<<num_of_fail_test<<"================"<<endl;
 }
+
+
 
 
 

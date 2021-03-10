@@ -2,7 +2,11 @@
     "files.associations": {
         "typeinfo": "cpp",
         "iostream": "cpp",
-        "array": "cpp"
+        "array": "cpp",
+        "string": "cpp",
+        "stdexcept": "cpp",
+        "algorithm": "cpp",
+        "ostream": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
